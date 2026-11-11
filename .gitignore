@@ -1,0 +1,40 @@
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Python bytecode & caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Packaging & Distribution
+build/
+dist/
+dist_installer/
+*.egg-info/
+.installed.cfg
+*.egg
+*.exe
+*.spec.bak
+
+# Environment & Local Config
+.env
+.env.local
+
+# OS & Editor artifacts
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
