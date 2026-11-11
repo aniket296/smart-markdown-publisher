@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smart-markdown-publisher"
+version = "1.0.0"
+description = "Smart Markdown-to-Print Desktop Publisher - Offline production Markdown studio with PyMuPDF Story typesetting"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "Smart Markdown Publisher Team"}
+]
+dependencies = [
+    "PyMuPDF>=1.24.0",
+    "Pillow>=10.0.0",
+    "Markdown>=3.6",
+    "PyYAML>=6.0.1",
+    "Pygments>=2.17.2",
+    "python-dotenv>=1.0.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pyinstaller>=6.0.0",
+]
+
+[project.scripts]
+smart-markdown-publisher = "src.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

@@ -1,0 +1,6 @@
+PyMuPDF>=1.24.0
+Pillow>=10.0.0
+Markdown>=3.6
+PyYAML>=6.0.1
+Pygments>=2.17.2
+python-dotenv>=1.0.1
