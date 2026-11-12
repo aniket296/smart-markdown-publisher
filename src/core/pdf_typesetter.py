@@ -243,10 +243,43 @@ def _stamp_headers_and_footers(
                 )
 
 
+def _strip_toc_lines_from_page_texts(
+    page_texts: list[str],
+    headings: list[HeadingNode],
+    start_page_idx: int,
+) -> list[str]:
+    """Remove rendered Table of Contents lines from page_texts so bookmarks match actual heading pages."""
+    cleaned = list(page_texts)
+    toc_titles = [h.text.strip() for h in headings if h.level <= 4 and h.text.strip()]
+    if not toc_titles:
+        return cleaned
+
+    in_toc = False
+    toc_cursor = 0
+    for p_idx in range(start_page_idx, len(cleaned)):
+        lines = cleaned[p_idx].splitlines()
+        kept_lines: list[str] = []
+        for line in lines:
+            stripped = line.strip()
+            if not in_toc and stripped.lower() == "table of contents":
+                in_toc = True
+                continue
+            if in_toc and toc_cursor < len(toc_titles):
+                if stripped.lower() == toc_titles[toc_cursor].lower():
+                    toc_cursor += 1
+                    continue
+            kept_lines.append(line)
+        cleaned[p_idx] = "\n".join(kept_lines)
+        if toc_cursor >= len(toc_titles):
+            break
+    return cleaned
+
+
 def _map_headings_to_pdf_toc(
     doc: fitz.Document,
     headings: list[HeadingNode],
     start_page_idx: int,
+    strip_toc: bool = False,
 ) -> list[list[int | str]]:
     """Map manuscript HeadingNodes to their 1-based PDF page numbers and normalize hierarchy for doc.set_toc()."""
     if not headings or len(doc) == 0:
@@ -254,6 +287,8 @@ def _map_headings_to_pdf_toc(
 
     # Pre-extract text per page for fast lookup
     page_texts: list[str] = [doc[i].get_text("text") for i in range(len(doc))]
+    if strip_toc:
+        page_texts = _strip_toc_lines_from_page_texts(page_texts, headings, start_page_idx)
     search_cursor = start_page_idx
 
     raw_entries: list[tuple[int, str, int]] = []
@@ -373,7 +408,12 @@ def typeset_to_pdf_bytes(
     _stamp_headers_and_footers(doc, manuscript, active_profile, content_start_page_idx)
 
     # 5. Clickable PDF Bookmarks (doc.set_toc())
-    toc_entries = _map_headings_to_pdf_toc(doc, manuscript.headings, content_start_page_idx)
+    toc_entries = _map_headings_to_pdf_toc(
+        doc,
+        manuscript.headings,
+        content_start_page_idx,
+        strip_toc=bool(toc_section),
+    )
     if toc_entries:
         if manuscript.metadata.include_cover:
             toc_entries.insert(0, [1, f"Cover: {manuscript.metadata.title}", 1])

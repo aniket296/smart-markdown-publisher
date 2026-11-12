@@ -130,7 +130,7 @@ def resolve_app_icon_path() -> Path:
 
 
 def _update_yaml_boolean_flag(raw_text: str, key: str, enabled: bool) -> str:
-    """Update or insert a boolean flag (`cover` or `toc`) inside the YAML frontmatter block."""
+    """Update or insert a boolean flag (`cover`/`include_cover` or `toc`/`include_toc`) in YAML frontmatter."""
     val_str = "true" if enabled else "false"
     stripped = raw_text.lstrip("\ufeff")
     if stripped.startswith("---"):
@@ -138,10 +138,17 @@ def _update_yaml_boolean_flag(raw_text: str, key: str, enabled: bool) -> str:
         if end_idx != -1:
             yaml_part = stripped[3:end_idx]
             rest = stripped[end_idx:]
-            pattern = re.compile(rf"^([ \t]*{re.escape(key)}[ \t]*:[ \t]*).*$", re.MULTILINE)
-            if pattern.search(yaml_part):
-                yaml_part = pattern.sub(rf"\g<1>{val_str}", yaml_part)
-            else:
+            alias_key = f"include_{key}"
+            alias_pat = re.compile(rf"^([ \t]*{re.escape(alias_key)}[ \t]*:[ \t]*).*$", re.MULTILINE)
+            key_pat = re.compile(rf"^([ \t]*{re.escape(key)}[ \t]*:[ \t]*).*$", re.MULTILINE)
+            replaced = False
+            if alias_pat.search(yaml_part):
+                yaml_part = alias_pat.sub(rf"\g<1>{val_str}", yaml_part)
+                replaced = True
+            if key_pat.search(yaml_part):
+                yaml_part = key_pat.sub(rf"\g<1>{val_str}", yaml_part)
+                replaced = True
+            if not replaced:
                 yaml_part = yaml_part.rstrip() + f"\n{key}: {val_str}\n"
             return f"---{yaml_part}{rest}"
 

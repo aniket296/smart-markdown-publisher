@@ -18,7 +18,7 @@ from src.utils.path_resolver import resolve_markdown_image_paths
 
 _HEADING_RE = re.compile(r"^[ \t]*(?P<hashes>#{1,6})[ \t]+(?P<text>[^\r\n#]+?)[ \t#]*$")
 _FENCED_CODE_RE = re.compile(
-    r"^(?P<fence>`{3,}|~{3,})[ \t]*(?P<lang>[a-zA-Z0-9_+-]*)[ \t]*\r?\n(?P<code>.*?)\r?\n(?P=fence)[ \t]*$",
+    r"^(?P<fence>`{3,}|~{3,})[ \t]*(?P<lang>[a-zA-Z0-9_+-]*)[ \t]*(?:\r?\n(?P<code>.*?))?\r?\n(?P=fence)[ \t]*$",
     re.MULTILINE | re.DOTALL,
 )
 _WORD_RE = re.compile(r"\b[\w'-]+\b", re.UNICODE)
@@ -146,7 +146,7 @@ def _preprocess_fenced_code_with_pygments(markdown_body: str) -> tuple[str, dict
         nonlocal counter
         counter += 1
         lang = (match.group("lang") or "").strip()
-        code = match.group("code")
+        code = match.group("code") or ""
         key = f"@@PYGMENTS_CODE_BLOCK_{counter}@@"
         placeholders[key] = _highlight_code_block(code, lang)
         return f"\n\n{key}\n\n"
