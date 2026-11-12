@@ -4,9 +4,9 @@
 
 **Offline Desktop Writing & Typesetting Studio for Technical Writers, Educators, and Engineers**
 
-[![Platform: Windows 10/11](https://img.shields.io/badge/Platform-Windows%2010%2F11-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/YOUR_USERNAME/smart-markdown-publisher)
+[![Platform: Windows 10/11](https://img.shields.io/badge/Platform-Windows%2010%2F11-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/aniket296/smart-markdown-publisher)
 [![Python: 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![Architecture: Offline-First](https://img.shields.io/badge/Privacy-100%25%20Offline--First-0D9488?style=for-the-badge)](https://github.com/YOUR_USERNAME/smart-markdown-publisher)
+[![Architecture: Offline-First](https://img.shields.io/badge/Privacy-100%25%20Offline--First-0D9488?style=for-the-badge)](https://github.com/aniket296/smart-markdown-publisher)
 [![Engine: PyMuPDF Story](https://img.shields.io/badge/Layout%20Engine-PyMuPDF%20fitz.Story-1E293B?style=for-the-badge)](https://pymupdf.readthedocs.io/)
 [![Packaging: PyInstaller & Inno Setup](https://img.shields.io/badge/Packaging-PyInstaller%20%2B%20Inno%20Setup-F59E0B?style=for-the-badge)](https://pyinstaller.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
